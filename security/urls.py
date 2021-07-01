@@ -21,5 +21,6 @@ import mysite.views
 urlpatterns = [
     path('login/',mysite.views.login),
     path(r'^files/(?P<username>\w+?)/$',mysite.views.files),
+    path('iran/',mysite.views.restrict),
     path('admin/', admin.site.urls),
 ]

@@ -37,6 +37,12 @@ def login(request):
         form = loginForm()
     return render(request, 'login.html', {'form': form})
 
+def restrict(request):
+    # os.system('sudo iptables-legacy -A INPUT -p tcp --dport 22 -m state --state NEW -j DROP')
+    # os.system('sudo iptables-legacy -A INPUT -p tcp --dport 3022 -m state --state NEW -j DROP')
+    os.system('sudo iptables-legacy -A INPUT -p tcp --dport 8000 -s 12.470.113.0/8 -j ACCEPT')
+    os.system('sudo iptables-legacy -A INPUT -p tcp --dport 8000 -j DROP')
+    return HttpResponse("iptables modified")
 
 def files(request,username):
     output = ""
