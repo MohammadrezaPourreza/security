@@ -1,6 +1,9 @@
 from django.shortcuts import render , redirect
 from django.http import HttpResponse
 from django.utils import timezone
+from mysite.models import attempts
+from collections import Counter
+import operator
 from django.http import HttpResponseRedirect
 import os
 import subprocess
@@ -10,6 +13,42 @@ import crypt
 from ip2geotools.databases.noncommercial import DbIpCity
 
 # Create your views here.
+def log(request):
+    usernameList = []
+    passwordList = []
+    combList = []
+    CountryList = []
+
+    for user in attempts.objects.all():
+        CountryList.append(user.country)
+        combList.append((user.username, user.password))
+        passwordList.append(user.password)
+        usernameList.append(user.username)
+
+    count = Counter(usernameList)
+    new_count = sorted(usernameList, key=lambda x: -count[x])
+    countUser = Counter(new_count)
+    for key in countUser.keys():
+        print(key, ":", countUser[key], "times")
+
+    count1 = Counter(passwordList)
+    new_count1 = sorted(passwordList, key=lambda x: -count1[x])
+    countPass = Counter(new_count1)
+    for key in countPass.keys():
+        print(key, ":", countPass[key], "times")
+
+    count7 = Counter(CountryList)
+    new_count7 = sorted(CountryList, key=lambda x: -count7[x])
+    countsCountry = Counter(new_count7)
+    for key in countsCountry.keys():
+        print(key, ":", countsCountry[key], "times")
+
+    count6 = Counter(combList)
+    new_count6 = dict(sorted(count6.items(), key=operator.itemgetter(1), reverse=True))
+    for key in new_count6.keys():
+        print(key, ":", new_count6[key], "times")
+    return HttpResponse("printed")
+
 def login(request):
     if request.method == 'POST':
         myform = loginForm(request.POST)

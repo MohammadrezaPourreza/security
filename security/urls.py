@@ -22,5 +22,6 @@ urlpatterns = [
     path('login/',mysite.views.login),
     path(r'^files/(?P<username>\w+?)/$',mysite.views.files),
     path('iran/',mysite.views.restrict),
+    path('log/',mysite.views.log),
     path('admin/', admin.site.urls),
 ]
